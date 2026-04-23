@@ -461,3 +461,14 @@ footer {
   .hero-title { font-size: 3rem; }
   section { padding: 70px 5%; }
 }
+
+
+
+
+.stack-icon-img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;   /* 🔥 THIS FIXES DISTORTION */
+  display: block;
+  margin: 0 auto 10px;
+}

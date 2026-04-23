@@ -1,4 +1,11 @@
 import { useEffect } from 'react'
+import ard from './assets/Arduino.png'
+import cpp from './assets/Cpp.png'
+import flu from './assets/Flutter.png'
+import rea from './assets/React.png'
+import ver from './assets/Vercel.png'
+import dar from './assets/Dart.png'
+import nod from './assets/Nodejs.png'
 
 export default function App() {
 
@@ -223,18 +230,23 @@ export default function App() {
         <h2 className="section-title fade-in">Tools & <span>Tech Stack</span></h2>
         <div className="stack-grid fade-in" style={{ transitionDelay: '0.2s' }}>
           {[
-            { icon: '⚙️', name: 'ESP32', desc: 'Microcontroller' },
-            { icon: '🖥️', name: 'C++', desc: 'Firmware Logic' },
-            { icon: '📱', name: 'Flutter / Dart', desc: 'Mobile App' },
-            { icon: '🧠', name: 'Grok API', desc: 'NLP / AI Engine' },
-            { icon: '📶', name: 'Bluetooth', desc: 'Wireless Comm' },
-            { icon: '🔷', name: 'Arduino IDE', desc: 'Development Env' },
-            { icon: '🔷', name: 'React.js', desc: 'Website Development' },
-            { icon: '🔷', name: 'Vercel', desc: 'Website Deployment' },
-            { icon: '🔷', name: 'Vite', desc: 'Framework' },
+            { icon: ard, name: 'Arduino', desc: 'Microcontroller IDE' },
+            { icon: cpp, name: 'C++', desc: 'Firmware Logic' },
+            { icon: flu, name: 'Flutter / Dart', desc: 'Mobile App' },
+            { icon: dar, name: 'Dart', desc: 'App dev language' },
+            { icon: nod, name: 'Node.js', desc: 'Web runtime' },
+            { icon: rea, name: 'React.js', desc: 'Website Development' },
+            { icon: ver, name: 'Vercel', desc: 'Website Deployment' },
           ].map((s, i) => (
             <div className="stack-item" key={i}>
-              <span className="stack-icon">{s.icon}</span>
+
+              {/* 🔥 MAIN FIX: IMAGE INSTEAD OF EMOJI */}
+              <img 
+                src={s.icon} 
+                alt={s.name} 
+                className="stack-icon-img"
+              />
+
               <div className="stack-name">{s.name}</div>
               <div className="stack-desc">{s.desc}</div>
             </div>
