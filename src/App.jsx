@@ -87,6 +87,36 @@ export default function App() {
         </div>
       </section>
 
+      {/* VIDEO */}
+      <section id="video">
+        <div className="section-label fade-in">Project Demo</div>
+        <h2 className="section-title fade-in">Watch <span>RoboComm</span> in Action</h2>
+        <p className="section-desc fade-in">See the robot navigate campus, respond to questions, and guide visitors in real time.</p>
+
+        {/* ── TO ADD YOUR YOUTUBE VIDEO ──────────────────────────────────────
+            Replace the <div className="video-wrapper"> block below with:
+
+            <div className="video-iframe-container">
+              <iframe
+                src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                allowFullScreen
+              ></iframe>
+            </div>
+        ──────────────────────────────────────────────────────────────────── */}
+        <div className="video-wrapper fade-in" style={{ transitionDelay: '0.2s' }}>
+          <div className="video-corner vc-tl"></div>
+          <div className="video-corner vc-tr"></div>
+          <div className="video-corner vc-bl"></div>
+          <div className="video-corner vc-br"></div>
+          <div className="video-placeholder-icon">▶</div>
+          <div className="video-placeholder-text">Demo Video Coming Soon</div>
+        </div>
+      </section>
+
+
+
+
+
       {/* FEATURES */}
       <section id="features">
         <div className="section-label fade-in">Core Innovation</div>
@@ -199,6 +229,9 @@ export default function App() {
             { icon: '🧠', name: 'Grok API', desc: 'NLP / AI Engine' },
             { icon: '📶', name: 'Bluetooth', desc: 'Wireless Comm' },
             { icon: '🔷', name: 'Arduino IDE', desc: 'Development Env' },
+            { icon: '🔷', name: 'React.js', desc: 'Website Development' },
+            { icon: '🔷', name: 'Vercel', desc: 'Website Deployment' },
+            { icon: '🔷', name: 'Vite', desc: 'Framework' },
           ].map((s, i) => (
             <div className="stack-item" key={i}>
               <span className="stack-icon">{s.icon}</span>
@@ -209,31 +242,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* VIDEO */}
-      <section id="video">
-        <div className="section-label fade-in">Project Demo</div>
-        <h2 className="section-title fade-in">Watch <span>RoboComm</span> in Action</h2>
-        <p className="section-desc fade-in">See the robot navigate campus, respond to questions, and guide visitors in real time.</p>
 
-        {/* ── TO ADD YOUR YOUTUBE VIDEO ──────────────────────────────────────
-            Replace the <div className="video-wrapper"> block below with:
-
-            <div className="video-iframe-container">
-              <iframe
-                src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-                allowFullScreen
-              ></iframe>
-            </div>
-        ──────────────────────────────────────────────────────────────────── */}
-        <div className="video-wrapper fade-in" style={{ transitionDelay: '0.2s' }}>
-          <div className="video-corner vc-tl"></div>
-          <div className="video-corner vc-tr"></div>
-          <div className="video-corner vc-bl"></div>
-          <div className="video-corner vc-br"></div>
-          <div className="video-placeholder-icon">▶</div>
-          <div className="video-placeholder-text">Demo Video Coming Soon</div>
-        </div>
-      </section>
 
       {/* TEAM */}
       <section id="team">
