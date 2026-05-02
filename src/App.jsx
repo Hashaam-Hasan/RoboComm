@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ard from './assets/Arduino.png'
 import cpp from './assets/Cpp.png'
 import flu from './assets/Flutter.png'
@@ -7,9 +7,22 @@ import ver from './assets/Vercel.png'
 import dar from './assets/Dart.png'
 import nod from './assets/Nodejs.png'
 
+// ─── AUTO-SCROLL CONFIG ──────────────────────────────────────────────────────
+const SCROLL_SPEED = 0.8          // px per frame — increase to go faster
+const PAUSE_AT_BOTTOM_MS = 3000   // ms to pause at bottom before looping back
+const RESUME_AFTER_IDLE_MS = 4000 // ms of no activity before auto-scroll resumes
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function App() {
 
-  // Fade-in on scroll
+  const [isPaused, setIsPaused] = useState(false)
+  const isPausedRef = useRef(false)
+  const resumeTimerRef = useRef(null)
+  const rafRef = useRef(null)
+  const atBottomTimerRef = useRef(null)
+  const scrollingToTopRef = useRef(false)
+
+  // ── FADE-IN ON SCROLL ──
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -20,8 +33,71 @@ export default function App() {
     return () => observer.disconnect()
   }, [])
 
+  // ── AUTO-SCROLL LOOP ──
+  useEffect(() => {
+    const scroll = () => {
+      if (!isPausedRef.current && !scrollingToTopRef.current) {
+        const maxScroll = document.body.scrollHeight - window.innerHeight
+        const position = window.scrollY
+        if (position >= maxScroll - 2) {
+          scrollingToTopRef.current = true
+          atBottomTimerRef.current = setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+            setTimeout(() => { scrollingToTopRef.current = false }, 1200)
+          }, PAUSE_AT_BOTTOM_MS)
+        } else {
+          window.scrollTo(0, position + SCROLL_SPEED)
+        }
+      }
+      rafRef.current = requestAnimationFrame(scroll)
+    }
+    rafRef.current = requestAnimationFrame(scroll)
+    return () => {
+      cancelAnimationFrame(rafRef.current)
+      clearTimeout(atBottomTimerRef.current)
+      clearTimeout(resumeTimerRef.current)
+    }
+  }, [])
+
+  // ── PAUSE ON USER INTERACTION, RESUME AFTER IDLE ──
+  useEffect(() => {
+    const pause = () => {
+      isPausedRef.current = true
+      setIsPaused(true)
+      clearTimeout(resumeTimerRef.current)
+      resumeTimerRef.current = setTimeout(() => {
+        isPausedRef.current = false
+        setIsPaused(false)
+      }, RESUME_AFTER_IDLE_MS)
+    }
+    window.addEventListener('mousemove', pause)
+    window.addEventListener('touchstart', pause)
+    window.addEventListener('keydown', pause)
+    window.addEventListener('wheel', pause, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', pause)
+      window.removeEventListener('touchstart', pause)
+      window.removeEventListener('keydown', pause)
+      window.removeEventListener('wheel', pause)
+    }
+  }, [])
+
   return (
     <>
+      {/* AUTO-SCROLL STATUS BADGE */}
+      <div style={{
+        position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 999,
+        fontFamily: "'Orbitron', monospace", fontSize: '0.65rem', letterSpacing: '2px',
+        textTransform: 'uppercase', padding: '6px 14px', borderRadius: '2px',
+        pointerEvents: 'none', transition: 'all 0.4s ease',
+        background: isPaused ? 'rgba(255,255,255,0.05)' : 'rgba(255,85,0,0.15)',
+        border: isPaused ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(255,85,0,0.4)',
+        color: isPaused ? '#888' : '#ff5500',
+        opacity: isPaused ? 0.7 : 1,
+      }}>
+        {isPaused ? '⏸ Paused' : '▶ Auto-Scrolling'}
+      </div>
+
       {/* NAV */}
       <nav>
         <div className="nav-logo">ROBO<span>COMM</span></div>
@@ -241,9 +317,9 @@ export default function App() {
             <div className="stack-item" key={i}>
 
               {/* 🔥 MAIN FIX: IMAGE INSTEAD OF EMOJI */}
-              <img 
-                src={s.icon} 
-                alt={s.name} 
+              <img
+                src={s.icon}
+                alt={s.name}
                 className="stack-icon-img"
               />
 
@@ -271,36 +347,65 @@ export default function App() {
         <div className="team-grid">
           {[
             {
-              roll: 'CS-22100', name: 'Shayan Hussain', role: 'Complete Firmware Implementation & System Integration', tag: 'Firmware & Software',
+              photo: '/shayan.JPG',
+              name: 'Shayan Hussain',
+              role: 'Complete Firmware Implementation & System Integration',
+              tag: 'Firmware & Software',
               task: 'Developed ESP32 firmware in C++. Established Bluetooth Serial bridge. Implemented command parsing logic. System Integration and Training.',
-              linkedin: 'https://linkedin.com/in/sshayanhussain', phone: 'tel:+923242123466', phoneLabel: '+92 324 2123466'
+              linkedin: 'https://linkedin.com/in/sshayanhussain',
+              email: 'mailto:shayanhussain268@gmail.com',
+              emailLabel: 'shayanhussain268@gmail.com'
             },
             {
-              roll: 'CS-22098', name: 'Hashaam Hasan', role: 'Software & Hardware Implementation, QA Testing & AI Integration', tag: 'Hardware & Software',
+              photo: '/hashaam.jpeg',
+              name: 'Hashaam Hasan',
+              role: 'Software & Hardware Implementation, QA Testing & AI Integration',
+              tag: 'Hardware & Software',
               task: 'Integration of AI in the system/software. Conducted range/latency/load and unit system testing. Hardware troubleshooting and development assistance. Development and deployment of Software and Website.',
-              linkedin: 'https://linkedin.com/in/hashaamhasan-', phone: 'tel:+923166365117', phoneLabel: '+92 316 6365117'
+              linkedin: 'https://linkedin.com/in/hashaamhasan-',
+              email: 'mailto:hashaam_hasan@gmail.com',
+              emailLabel: 'hashaam_hasan@gmail.com'
             },
             {
-              roll: 'CS-22093', name: 'Ali Hyder', role: 'Hardware & Electronics Lead Engineer', tag: 'Hardware',
+              photo: '/ali.jpeg',
+              name: 'Ali Hyder',
+              role: 'Hardware & Electronics Lead Engineer',
+              tag: 'Hardware',
               task: 'Mechanical assembly of 4WD chassis. Circuit design, wiring & soldering. Power distribution. Sensor interfacing (Ultrasonic, ToF, MPU6050). Hardware design lead.',
-              linkedin: 'https://linkedin.com/in/alihyder-', phone: 'tel:+923328098273', phoneLabel: '+92 332 8098273'
+              linkedin: 'https://linkedin.com/in/alihyder-',
+              email: 'mailto:hyder8098272@gmail.com',
+              emailLabel: 'hyder8098272@gmail.com'
             },
             {
-              roll: 'CS-22088', name: 'Abdul Moiz', role: 'App Development & UI/UX Design', tag: 'Application',
+              photo: '/moiz.jpeg',
+              name: 'Abdul Moiz',
+              role: 'App Development & UI/UX Design',
+              tag: 'Application',
               task: 'Designed full UI/UX. Developed Admin Panel with joystick controls. Created Visitor Mode dashboard. Implemented front-end validation.',
-              linkedin: 'https://linkedin.com/in/amabdulmoiz', phone: 'tel:+923121101233', phoneLabel: '+92 312 1101233'
+              linkedin: 'https://linkedin.com/in/amabdulmoiz',
+              email: 'mailto:moiz13072004@gmail.com',
+              emailLabel: 'moiz13072004@gmail.com'
             },
-
           ].map((m, i) => (
             <div className="team-card fade-in" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
               <div className="team-card-role-tag">{m.tag}</div>
-              <div className="team-roll">{m.roll}</div>
+
+              <div className="team-photo-wrapper">
+                <img
+                  src={m.photo}
+                  alt={m.name}
+                  className="team-photo"
+                  onError={(e) => { e.target.style.display = 'none' }}
+                />
+                <div className="team-photo-ring"></div>
+              </div>
+
               <div className="team-name">{m.name}</div>
               <div className="team-role">{m.role}</div>
               <div className="team-task">{m.task}</div>
               <div className="team-links">
                 <a href={m.linkedin} target="_blank" rel="noreferrer" className="team-link">LinkedIn</a>
-                <a href={m.phone} className="team-link">{m.phoneLabel}</a>
+                <a href={m.email} className="team-link">{m.emailLabel}</a>
               </div>
             </div>
           ))}
