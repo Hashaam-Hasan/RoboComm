@@ -8,7 +8,7 @@ import dar from './assets/Dart.png'
 import nod from './assets/Nodejs.png'
 
 // ─── AUTO-SCROLL CONFIG ──────────────────────────────────────────────────────
-const SCROLL_SPEED = 0.8          // px per frame — increase to go faster
+const SCROLL_SPEED = 2.2          // px per frame — increase to go faster
 const PAUSE_AT_BOTTOM_MS = 3000   // ms to pause at bottom before looping back
 const RESUME_AFTER_IDLE_MS = 4000 // ms of no activity before auto-scroll resumes
 // ─────────────────────────────────────────────────────────────────────────────
